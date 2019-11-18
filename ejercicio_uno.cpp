@@ -2,7 +2,6 @@
 #include <iostream>
 #include <cmath>
 #include <fstream>
-using namespace std;
 
 // variable constantes globales
 const double K = 100;
@@ -11,7 +10,7 @@ const double LAMBDA = 1;
 const double DeltaT = 0.01;
 
 // declaracion de funciones
-ofstream outfile;
+std::ofstream outfile;
 double f0(double t, double y0, double y1); // derivada de y0
 double f1(double t, double y0, double y1); // derivada de y1
 void rk4(double t, double h, double & y0, double & y1); // metodo de runge kutta 4 orden
@@ -24,7 +23,7 @@ int main(void)
   v = 0;
   outfile.open("RK4.dat");
   for(time = 0; time <= 10; time += DeltaT) {
-    outfile << time << " " << x << " " << v << endl;
+    outfile << time << " " << x << " " << v << std::endl;
     rk4(time, DeltaT, x, v);
   }
   outfile.close();
@@ -33,7 +32,7 @@ int main(void)
   v = 0;
   outfile.open("euler.dat");
   for(time = 0; time <= 10; time += DeltaT) {
-    outfile << time << " " << x << " " << v << endl;
+    outfile << time << " " << x << " " << v << std::endl;
     euler(time, DeltaT, x, v);
   }
   outfile.close();
@@ -69,6 +68,8 @@ void rk4(double t, double h, double & y0, double & y1) // metodo de runge kutta 
 }
 
 void euler(double t, double h, double & y0, double & y1){
-  y0 = y0 + f0(t, y0, y1)*h;
-  y1 = y1 + f1(t, y0, y1)*h;
+  double temp0 = y0;
+  double temp1 = y1;
+  y0 = y0 + f0(t, temp0, temp1)*h;
+  y1 = y1 + f1(t, temp0, temp1)*h;
 }
